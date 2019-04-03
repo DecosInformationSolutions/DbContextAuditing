@@ -4,8 +4,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Decos.Security.Auditing.EntityFrameworkCore
 {
+    /// <summary>
+    /// Provides a set of static methods for configuring a model for auditing.
+    /// </summary>
     public static class ModelBuilderExtensions
     {
+        /// <summary>
+        /// Configures auditing in the model.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder to configure.</param>
+        /// <returns>The configured model builder.</returns>
         public static ModelBuilder UseAuditing(this ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ChangeSet>()

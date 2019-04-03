@@ -17,6 +17,20 @@ namespace Decos.Security.Auditing.EntityFrameworkCore
     {
         private readonly IBackgroundTaskQueue _backgroundTaskQueue;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AuditedContext"/> class
+        /// with the specified dependencies.
+        /// </summary>
+        /// <param name="changeRecorders">
+        /// A collection of objects that can record changes made to this context.
+        /// </param>
+        /// <param name="identity">
+        /// Provides information about the currently authenticated client.
+        /// </param>
+        /// <param name="backgroundTaskQueue">
+        /// A queue for scheduling background operations.
+        /// </param>
+        /// <param name="options">The options for this context.</param>
         protected AuditedContext(
             IEnumerable<IChangeRecorder> changeRecorders,
             IIdentity identity,
