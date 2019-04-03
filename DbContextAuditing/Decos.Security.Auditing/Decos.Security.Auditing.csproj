@@ -1,7 +1,16 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Authors>Laura Verdoes</Authors>
+    <Version>1.0.0-alpha</Version>
+    <Company>Decos Information Solutions</Company>
+    <Description>Provides abstractions for auditing data.</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl></RepositoryUrl>
+    <PackageProjectUrl>https://github.com/DecosInformationSolutions/DbContextAuditing</PackageProjectUrl>
   </PropertyGroup>
 
 </Project>

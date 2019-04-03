@@ -1,7 +1,15 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Version>1.0.0-alpha</Version>
+    <Authors>Laura Verdoes</Authors>
+    <Company>Decos Information Solutions</Company>
+    <Description>Provides a DbContext base class for auditing changes in an Entity Framework Core database context.</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/DecosInformationSolutions/DbContextAuditing</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>
