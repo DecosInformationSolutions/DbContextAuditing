@@ -16,13 +16,15 @@ namespace Decos.Security.Auditing.EntityFrameworkCore
     public abstract class AuditedContext : DbContext, IAuditedContext, IAuditContext
     {
         private readonly IBackgroundTaskQueue _backgroundTaskQueue;
+        private readonly IServiceProvider _serviceProvider;
+        private readonly Lazy<IEnumerable<IChangeRecorder>> _changeRecorders;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AuditedContext"/> class
         /// with the specified dependencies.
         /// </summary>
-        /// <param name="changeRecorders">
-        /// A collection of objects that can record changes made to this context.
+        /// <param name="serviceProvider">
+        /// Used to retrieve dependencies at runtime.
         /// </param>
         /// <param name="identity">
         /// Provides information about the currently authenticated client.
@@ -32,22 +34,25 @@ namespace Decos.Security.Auditing.EntityFrameworkCore
         /// </param>
         /// <param name="options">The options for this context.</param>
         protected AuditedContext(
-            IEnumerable<IChangeRecorder> changeRecorders,
+            IServiceProvider serviceProvider,
             IIdentity identity,
             IBackgroundTaskQueue backgroundTaskQueue,
             DbContextOptions options)
             : base(options)
         {
             Identity = identity;
-            ChangeRecorders = changeRecorders;
             _backgroundTaskQueue = backgroundTaskQueue;
+            _serviceProvider = serviceProvider;
+            _changeRecorders = new Lazy<IEnumerable<IChangeRecorder>>(() 
+                => (IEnumerable<IChangeRecorder>)_serviceProvider.GetService(typeof(IEnumerable<IChangeRecorder>)));
         }
 
         /// <summary>
         /// Gets a collection of objects that record changes to the database
         /// context.
         /// </summary>
-        public IEnumerable<IChangeRecorder> ChangeRecorders { get; }
+        public IEnumerable<IChangeRecorder> ChangeRecorders
+            => _changeRecorders.Value;
 
         /// <summary>
         /// Gets information about the currently authenticated client.

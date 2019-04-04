@@ -16,6 +16,8 @@ namespace Decos.Security.Auditing.EntityFrameworkCore
         /// <returns>The configured model builder.</returns>
         public static ModelBuilder UseAuditing(this ModelBuilder modelBuilder)
         {
+            modelBuilder.Ignore<Type>();
+
             modelBuilder.Entity<ChangeSet>()
                 .Property(x => x.Id)
                 .ValueGeneratedOnAdd();
