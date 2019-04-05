@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Version>1.0.0-alpha</Version>
+    <Authors>Laura Verdoes</Authors>
+    <Company>Decos Information Solutions</Company>
+    <Description>Provides a DbContext base class for auditing changes in an Entity Framework Core database context.</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/DecosInformationSolutions/DbContextAuditing</PackageProjectUrl>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Decos.AspNetCore.BackgroundTasks" Version="1.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.3" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Decos.Data.Auditing\Decos.Data.Auditing.csproj" />
+  </ItemGroup>
+
+</Project>
