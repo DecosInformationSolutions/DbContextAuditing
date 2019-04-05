@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Decos.Security.Auditing\Decos.Data.Auditing.csproj" />
+    <ProjectReference Include="..\Decos.Data.Auditing\Decos.Data.Auditing.csproj" />
   </ItemGroup>
 
 </Project>
