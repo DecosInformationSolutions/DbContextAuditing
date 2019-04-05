@@ -12,23 +12,6 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         /// <summary>
         /// Adds the services required for database context auditing. Note that
-        /// implements of both <see cref="IIdentity"/> and <see
-        /// cref="IAuditContext"/> need to be registered with the service
-        /// collection as well.
-        /// </summary>
-        /// <param name="services">
-        /// The service collection to add the services to.
-        /// </param>
-        /// <returns>A reference to the same service collection.</returns>
-        public static IServiceCollection AddDbContextAuditing(this IServiceCollection services)
-        {
-            return services
-                .AddScoped<IChangeRecorder, AuditContextChangeRecorder>()
-                .AddBackgroundTasks();
-        }
-
-        /// <summary>
-        /// Adds the services required for database context auditing. Note that
         /// an implementation of <see cref="IIdentity"/> needs to be registered
         /// with the service collection as well.
         /// </summary>
@@ -42,21 +25,18 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </param>
         /// <returns>A reference to the same service collection.</returns>
         public static IServiceCollection AddDbContextAuditing<TContext>(this IServiceCollection services)
-            where TContext : class, IAuditContext
+            where TContext : class, IAuditContext, IAuditedContext
         {
             return services
-                .AddDbContextAuditing()
+                .AddScoped<IChangeRecorder, SameContextChangeRecorder>()
+                .AddBackgroundTasks()
                 .AddScoped<IAuditContext, TContext>();
         }
 
         /// <summary>
         /// Adds the services required for database context auditing.
         /// </summary>
-        /// <typeparam name="TContext">
-        /// The type of database context that is used to store audit records.
-        /// This can be the same as or different from the context that is being
-        /// audited.
-        /// </typeparam>
+        /// <typeparam name="TContext">The type of database context.</typeparam>
         /// <typeparam name="TIdentity">
         /// The type of class used to provide information about the currently
         /// authenticated client.
@@ -66,7 +46,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </param>
         /// <returns>A reference to the same service collection.</returns>
         public static IServiceCollection AddDbContextAuditing<TContext, TIdentity>(this IServiceCollection services)
-            where TContext : class, IAuditContext
+            where TContext : class, IAuditContext, IAuditedContext
             where TIdentity : class, IIdentity
         {
             return services

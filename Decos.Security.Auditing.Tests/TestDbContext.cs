@@ -10,11 +10,11 @@ namespace Decos.Security.Auditing.Tests
     public class TestDbContext : AuditedContext
     {
         public TestDbContext(
-            IServiceProvider serviceProvider,
+            IEnumerable<IChangeRecorder> changeRecorders,
             IIdentity identity,
             IBackgroundTaskQueue backgroundTaskQueue,
             DbContextOptions options) 
-            : base(serviceProvider, identity, backgroundTaskQueue, options)
+            : base(changeRecorders, identity, backgroundTaskQueue, options)
         {
         }
 

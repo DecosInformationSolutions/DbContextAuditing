@@ -82,7 +82,12 @@ namespace Decos.Security.Auditing.EntityFrameworkCore
             if (context.ChangeRecorders != null)
             {
                 foreach (var changeRecorder in context.ChangeRecorders)
+                {
+                    if (changeRecorder is IHasParentContext parentContextRecorder)
+                        parentContextRecorder.ParentContext = (IAuditContext)context;
+
                     changeRecorder.OnSavingChanges();
+                }
             }
         }
 

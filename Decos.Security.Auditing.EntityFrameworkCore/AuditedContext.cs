@@ -16,15 +16,13 @@ namespace Decos.Security.Auditing.EntityFrameworkCore
     public abstract class AuditedContext : DbContext, IAuditedContext, IAuditContext
     {
         private readonly IBackgroundTaskQueue _backgroundTaskQueue;
-        private readonly IServiceProvider _serviceProvider;
-        private readonly Lazy<IEnumerable<IChangeRecorder>> _changeRecorders;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AuditedContext"/> class
         /// with the specified dependencies.
         /// </summary>
-        /// <param name="serviceProvider">
-        /// Used to retrieve dependencies at runtime.
+        /// <param name="changeRecorders">
+        /// A collection of objects that can record changes made in this context.
         /// </param>
         /// <param name="identity">
         /// Provides information about the currently authenticated client.
@@ -34,25 +32,22 @@ namespace Decos.Security.Auditing.EntityFrameworkCore
         /// </param>
         /// <param name="options">The options for this context.</param>
         protected AuditedContext(
-            IServiceProvider serviceProvider,
+            IEnumerable<IChangeRecorder> changeRecorders,
             IIdentity identity,
             IBackgroundTaskQueue backgroundTaskQueue,
             DbContextOptions options)
             : base(options)
         {
+            ChangeRecorders = changeRecorders;
             Identity = identity;
             _backgroundTaskQueue = backgroundTaskQueue;
-            _serviceProvider = serviceProvider;
-            _changeRecorders = new Lazy<IEnumerable<IChangeRecorder>>(() 
-                => (IEnumerable<IChangeRecorder>)_serviceProvider.GetService(typeof(IEnumerable<IChangeRecorder>)));
         }
 
         /// <summary>
         /// Gets a collection of objects that record changes to the database
         /// context.
         /// </summary>
-        public IEnumerable<IChangeRecorder> ChangeRecorders
-            => _changeRecorders.Value;
+        public IEnumerable<IChangeRecorder> ChangeRecorders { get; }
 
         /// <summary>
         /// Gets information about the currently authenticated client.
