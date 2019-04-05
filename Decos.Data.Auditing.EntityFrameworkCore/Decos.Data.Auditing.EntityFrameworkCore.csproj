@@ -10,6 +10,7 @@
     <Description>Provides a DbContext base class for auditing changes in an Entity Framework Core database context.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/DecosInformationSolutions/DbContextAuditing</PackageProjectUrl>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
