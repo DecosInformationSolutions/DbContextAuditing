@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Decos.Security.Auditing
+namespace Decos.Data.Auditing
 {
     /// <summary>
     /// Defines methods to record changes to entities in the database.

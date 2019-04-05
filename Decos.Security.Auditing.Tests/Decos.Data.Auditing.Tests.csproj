@@ -22,8 +22,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Decos.Security.Auditing.EntityFrameworkCore\Decos.Security.Auditing.EntityFrameworkCore.csproj" />
-    <ProjectReference Include="..\Decos.Security.Auditing\Decos.Security.Auditing.csproj" />
+    <ProjectReference Include="..\Decos.Security.Auditing.EntityFrameworkCore\Decos.Data.Auditing.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\Decos.Security.Auditing\Decos.Data.Auditing.csproj" />
   </ItemGroup>
 
 </Project>

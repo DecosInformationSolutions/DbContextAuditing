@@ -2,7 +2,7 @@
 
 using Newtonsoft.Json;
 
-namespace Decos.Security.Auditing.EntityFrameworkCore
+namespace Decos.Data.Auditing.EntityFrameworkCore
 {
     /// <summary>
     /// Records changes and stores them in the same database context.

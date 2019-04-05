@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Decos.AspNetCore.BackgroundTasks;
+
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
-namespace Decos.Security.Auditing.EntityFrameworkCore
+namespace Decos.Data.Auditing.EntityFrameworkCore
 {
     /// <summary>
     /// Defines a database context of which the changes to entities can be

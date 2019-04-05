@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace Decos.Security.Auditing.EntityFrameworkCore
+namespace Decos.Data.Auditing.EntityFrameworkCore
 {
     /// <summary>
     /// Defines a database context that can be used to store changes to audited

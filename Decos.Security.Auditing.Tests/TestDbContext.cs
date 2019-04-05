@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+
 using Decos.AspNetCore.BackgroundTasks;
-using Decos.Security.Auditing.EntityFrameworkCore;
+using Decos.Data.Auditing.EntityFrameworkCore;
+
 using Microsoft.EntityFrameworkCore;
 
-namespace Decos.Security.Auditing.Tests
+namespace Decos.Data.Auditing.Tests
 {
     public class TestDbContext : AuditedContext
     {
@@ -13,7 +14,7 @@ namespace Decos.Security.Auditing.Tests
             IEnumerable<IChangeRecorder> changeRecorders,
             IIdentity identity,
             IBackgroundTaskQueue backgroundTaskQueue,
-            DbContextOptions options) 
+            DbContextOptions options)
             : base(changeRecorders, identity, backgroundTaskQueue, options)
         {
         }

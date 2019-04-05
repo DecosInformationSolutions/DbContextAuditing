@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
-namespace Decos.Security.Auditing.EntityFrameworkCore
+namespace Decos.Data.Auditing.EntityFrameworkCore
 {
     /// <summary>
     /// Provides a set of static methods for managing changes in an audited
@@ -30,7 +30,6 @@ namespace Decos.Security.Auditing.EntityFrameworkCore
                 context.ChangeTracker.DetectChanges();
 
             foreach (var entry in context.ChangeTracker.Entries())
-            {
                 switch (entry.State)
                 {
                     case EntityState.Deleted:
@@ -45,7 +44,6 @@ namespace Decos.Security.Auditing.EntityFrameworkCore
                         entry.State = EntityState.Detached;
                         break;
                 }
-            }
         }
 
         /// <summary>
@@ -80,7 +78,6 @@ namespace Decos.Security.Auditing.EntityFrameworkCore
             }
 
             if (context.ChangeRecorders != null)
-            {
                 foreach (var changeRecorder in context.ChangeRecorders)
                 {
                     if (changeRecorder is IHasParentContext parentContextRecorder)
@@ -88,7 +85,6 @@ namespace Decos.Security.Auditing.EntityFrameworkCore
 
                     changeRecorder.OnSavingChanges();
                 }
-            }
         }
 
         /// <summary>
@@ -155,10 +151,8 @@ namespace Decos.Security.Auditing.EntityFrameworkCore
                         // `Equals(object, object)` calls an overridden Equals,
                         // whereas `object != object` does not.
                         if (entry.IsModified && !Equals(entry.CurrentValue, entry.OriginalValue))
-                        {
                             foreach (var changeRecorder in context.ChangeRecorders)
                                 changeRecorder.RecordChange(auditedEntity, property.Name, entry.OriginalValue, entry.CurrentValue);
-                        }
                     }
                     break;
             }

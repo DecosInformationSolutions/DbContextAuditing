@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Decos.Security.Auditing
+namespace Decos.Data.Auditing
 {
     /// <summary>
     /// Defines a database entity that can be audited.

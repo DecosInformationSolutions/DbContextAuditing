@@ -2,7 +2,7 @@
 
 using Microsoft.EntityFrameworkCore;
 
-namespace Decos.Security.Auditing.EntityFrameworkCore
+namespace Decos.Data.Auditing.EntityFrameworkCore
 {
     /// <summary>
     /// Provides a set of static methods for configuring a model for auditing.

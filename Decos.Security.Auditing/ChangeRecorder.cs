@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Decos.Security.Auditing
+namespace Decos.Data.Auditing
 {
     /// <summary>
     /// Provides a base for classes that record changes to entities in the

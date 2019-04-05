@@ -1,6 +1,6 @@
 ﻿using System;
-using Decos.Security.Auditing;
-using Decos.Security.Auditing.EntityFrameworkCore;
+using Decos.Data.Auditing;
+using Decos.Data.Auditing.EntityFrameworkCore;
 
 namespace Microsoft.Extensions.DependencyInjection
 {

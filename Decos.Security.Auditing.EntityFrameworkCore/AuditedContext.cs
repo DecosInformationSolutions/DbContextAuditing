@@ -7,7 +7,7 @@ using Decos.AspNetCore.BackgroundTasks;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace Decos.Security.Auditing.EntityFrameworkCore
+namespace Decos.Data.Auditing.EntityFrameworkCore
 {
     /// <summary>
     /// Represents a database context where the changes to audited entities are

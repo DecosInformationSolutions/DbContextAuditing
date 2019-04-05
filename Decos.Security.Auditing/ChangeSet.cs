@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Decos.Security.Auditing
+namespace Decos.Data.Auditing
 {
     /// <summary>
     /// Represents a transaction of one or more changes to audited database

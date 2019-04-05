@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Decos.Security.Auditing
+namespace Decos.Data.Auditing
 {
     /// <summary>
     /// Defines properties that expose information about an authenticated client.

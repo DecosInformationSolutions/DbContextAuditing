@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Decos.Security.Auditing.Tests
+namespace Decos.Data.Auditing.Tests
 {
     [TestClass]
     public class AuditedContextTests
@@ -35,9 +35,7 @@ namespace Decos.Security.Auditing.Tests
         {
             using (var scope = _serviceProvider.CreateScope())
             using (var context = scope.ServiceProvider.GetRequiredService<TestDbContext>())
-            {
                 await context.Database.EnsureCreatedAsync();
-            }
         }
 
         [TestCleanup]
@@ -45,9 +43,7 @@ namespace Decos.Security.Auditing.Tests
         {
             using (var scope = _serviceProvider.CreateScope())
             using (var context = scope.ServiceProvider.GetRequiredService<TestDbContext>())
-            {
                 await context.Database.EnsureDeletedAsync();
-            }
         }
 
         [TestMethod]

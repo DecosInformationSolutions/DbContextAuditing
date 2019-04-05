@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Decos.Security.Auditing
+namespace Decos.Data.Auditing
 {
     /// <summary>
     /// Represents a change to a property.

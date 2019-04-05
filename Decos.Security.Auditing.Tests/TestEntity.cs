@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Decos.Security.Auditing.Tests
+namespace Decos.Data.Auditing.Tests
 {
     /// <summary>
     /// Represents a database entity used purely for testing purposes.

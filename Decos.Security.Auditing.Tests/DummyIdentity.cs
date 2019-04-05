@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Decos.Security.Auditing.Tests
+namespace Decos.Data.Auditing.Tests
 {
     internal class DummyIdentity : IIdentity
     {
