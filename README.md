@@ -27,3 +27,7 @@ At the moment, we support the ASP.NET Core Dependency Injection abstractions. Co
         options.UseSqlite("Data Source=Test.db");
     });
     services.AddDbContextAuditing<TestDbContext, TestIdentity>()
+
+**If you're using migrations, don't forget to add a new migration:**
+
+    PM> Add-Migration AddDbContextAuditing
