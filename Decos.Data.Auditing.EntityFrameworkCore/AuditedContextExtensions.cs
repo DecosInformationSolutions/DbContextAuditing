@@ -65,19 +65,20 @@ namespace Decos.Data.Auditing.EntityFrameworkCore
                 {
                     case EntityState.Added:
                         auditedEntity.Created = DateTimeOffset.Now;
-                        auditedEntity.CreatedBy = context.Identity.Id;
+                        auditedEntity.CreatedBy = context.Identity?.Id;
                         break;
 
                     case EntityState.Modified:
                         auditedEntity.LastModified = DateTimeOffset.Now;
-                        auditedEntity.LastModifiedBy = context.Identity.Id;
+                        auditedEntity.LastModifiedBy = context.Identity?.Id;
                         break;
                 }
 
                 context.RecordChange(entity, auditedEntity);
             }
 
-            if (context.ChangeRecorders != null)
+            if (context.CanAudit())
+            {
                 foreach (var changeRecorder in context.ChangeRecorders)
                 {
                     if (changeRecorder is IHasParentContext parentContextRecorder)
@@ -85,6 +86,7 @@ namespace Decos.Data.Auditing.EntityFrameworkCore
 
                     changeRecorder.OnSavingChanges();
                 }
+            }
         }
 
         /// <summary>
@@ -101,7 +103,7 @@ namespace Decos.Data.Auditing.EntityFrameworkCore
         /// <returns>A task that represents the asynchronous operation.</returns>
         public static async Task CommitRecordedChangesAsync(this IAuditedContext context, CancellationToken cancellationToken = default)
         {
-            if (context.ChangeRecorders == null)
+            if (!context.CanAudit())
                 return;
 
             await Task.WhenAll(context.ChangeRecorders.Select(x => x.CommitAsync(cancellationToken)));
@@ -120,15 +122,33 @@ namespace Decos.Data.Auditing.EntityFrameworkCore
         /// <returns>A task that represents the asynchronous operation.</returns>
         public static async Task DiscardRecordedChangesAsync(this IAuditedContext context, CancellationToken cancellationToken = default)
         {
-            if (context.ChangeRecorders == null)
+            if (!context.CanAudit())
                 return;
 
             await Task.WhenAll(context.ChangeRecorders.Select(x => x.DiscardAsync(cancellationToken)));
         }
 
+        /// <summary>
+        /// Determines whether the database context is configured to support
+        /// auditing.
+        /// </summary>
+        /// <param name="auditedContext">The database context.</param>
+        /// <returns>
+        /// <c>true</c> if the services required for auditing are set; otherwise,
+        /// <c>false</c>.
+        /// </returns>
+        public static bool CanAudit(this IAuditedContext auditedContext)
+        {
+            if (auditedContext == null)
+                throw new ArgumentNullException(nameof(auditedContext));
+
+            return auditedContext.ChangeRecorders?.Any() == true
+                && auditedContext.Identity != null;
+        }
+
         private static void RecordChange(this IAuditedContext context, EntityEntry entity, IAuditedEntity auditedEntity)
         {
-            if (context.ChangeRecorders == null)
+            if (!context.CanAudit())
                 return;
 
             switch (entity.State)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -19,7 +20,43 @@ namespace Decos.Data.Auditing.EntityFrameworkCore
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AuditedContext"/> class
-        /// with the specified dependencies.
+        /// with the specified options. This instance will not be able to perform
+        /// auditing and will not be able to set all <see cref="IAuditedEntity"/>
+        /// properties.
+        /// </summary>
+        /// <param name="options">The options for this context.</param>
+        protected AuditedContext(
+            DbContextOptions options)
+            : base(options)
+        {
+            ChangeRecorders = Enumerable.Empty<IChangeRecorder>();
+            Identity = null;
+            _backgroundTaskQueue = null;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AuditedContext"/> class
+        /// with the specified options. This instance will not be able to perform
+        /// auditing but will still update <see cref="IAuditedEntity"/>
+        /// properties.
+        /// </summary>
+        /// <param name="identity">
+        /// Provides information about the currently authenticated client.
+        /// </param>
+        /// <param name="options">The options for this context.</param>
+        protected AuditedContext(
+            IIdentity identity,
+            DbContextOptions options)
+            : base(options)
+        {
+            ChangeRecorders = Enumerable.Empty<IChangeRecorder>();
+            Identity = identity;
+            _backgroundTaskQueue = null;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AuditedContext"/> class
+        /// with the specified dependencies for auditing.
         /// </summary>
         /// <param name="changeRecorders">
         /// A collection of objects that can record changes made in this context.
@@ -98,13 +135,19 @@ namespace Decos.Data.Auditing.EntityFrameworkCore
             {
                 this.RecordChanges();
                 var result = base.SaveChanges(acceptAllChangesOnSuccess);
-                _backgroundTaskQueue.QueueBackgroundWorkItem(async shutdownToken
-                    => await this.CommitRecordedChangesAsync(shutdownToken));
+                if (this.CanAudit())
+                {
+                    _backgroundTaskQueue.QueueBackgroundWorkItem(async shutdownToken
+                        => await this.CommitRecordedChangesAsync(shutdownToken));
+                }
                 return result;
             }
             catch
             {
-                this.DiscardRecordedChangesAsync().GetAwaiter().GetResult();
+                if (this.CanAudit())
+                {
+                    this.DiscardRecordedChangesAsync().GetAwaiter().GetResult();
+                }
                 throw;
             }
         }
@@ -156,16 +199,22 @@ namespace Decos.Data.Auditing.EntityFrameworkCore
             {
                 this.RecordChanges();
                 var result = await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
-                _backgroundTaskQueue.QueueBackgroundWorkItem(async shutdownToken =>
+                if (this.CanAudit())
                 {
-                    var linkedTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, shutdownToken);
-                    await this.CommitRecordedChangesAsync(linkedTokenSource.Token);
-                });
+                    _backgroundTaskQueue.QueueBackgroundWorkItem(async shutdownToken =>
+                    {
+                        var linkedTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, shutdownToken);
+                        await this.CommitRecordedChangesAsync(linkedTokenSource.Token);
+                    });
+                }
                 return result;
             }
             catch
             {
-                await this.DiscardRecordedChangesAsync(cancellationToken);
+                if (this.CanAudit())
+                {
+                    await this.DiscardRecordedChangesAsync(cancellationToken);
+                }
                 throw;
             }
         }
