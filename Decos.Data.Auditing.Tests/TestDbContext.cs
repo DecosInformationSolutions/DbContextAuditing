@@ -10,6 +10,16 @@ namespace Decos.Data.Auditing.Tests
 {
     public class TestDbContext : AuditedContext
     {
+        public TestDbContext(DbContextOptions options)
+            : base(options)
+        {
+        }
+
+        public TestDbContext(IIdentity identity, DbContextOptions options)
+            : base(identity, options)
+        {
+        }
+
         public TestDbContext(
             IEnumerable<IChangeRecorder> changeRecorders,
             IIdentity identity,

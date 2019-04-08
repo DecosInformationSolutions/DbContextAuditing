@@ -16,8 +16,8 @@ namespace Decos.Data.Auditing.Tests
     {
         private static IServiceProvider _serviceProvider;
 
-        [AssemblyInitialize]
-        public static void OnTestRunStarting(TestContext testContext)
+        [ClassInitialize]
+        public static void OnTestsStarting(TestContext testContext)
         {
             _serviceProvider = new ServiceCollection()
                 .AddDbContext<TestDbContext>(options =>
@@ -65,7 +65,25 @@ namespace Decos.Data.Auditing.Tests
         }
 
         [TestMethod]
-        public async Task ChangingAValueUpdatesModifiedDate()
+        public async Task NewEntitiesShouldHaveACreatedBy()
+        {
+            using (var scope = _serviceProvider.CreateScope())
+            using (var context = scope.ServiceProvider.GetRequiredService<TestDbContext>())
+            {
+                context.TestEntities.Add(new TestEntity());
+                await context.SaveChangesAsync();
+            }
+
+            using (var scope = _serviceProvider.CreateScope())
+            using (var context = scope.ServiceProvider.GetRequiredService<TestDbContext>())
+            {
+                var entity = await context.TestEntities.SingleAsync();
+                Assert.IsNotNull(entity.CreatedBy);
+            }
+        }
+
+        [TestMethod]
+        public async Task ChangingAValueShouldUpdateModifiedDate()
         {
             Guid id;
             using (var scope = _serviceProvider.CreateScope())
@@ -90,7 +108,32 @@ namespace Decos.Data.Auditing.Tests
         }
 
         [TestMethod]
-        public async Task ChangingAValueAddsAChangeRecord()
+        public async Task ChangingAValueShouldUpdateModifiedBy()
+        {
+            Guid id;
+            using (var scope = _serviceProvider.CreateScope())
+            using (var context = scope.ServiceProvider.GetRequiredService<TestDbContext>())
+            {
+                var entity = new TestEntity();
+                context.TestEntities.Add(entity);
+                await context.SaveChangesAsync();
+
+                id = entity.Id;
+                entity.Value1 = "Test";
+                await context.SaveChangesAsync();
+                await RunAllBackgroundTasksAsync();
+            }
+
+            using (var scope = _serviceProvider.CreateScope())
+            using (var context = scope.ServiceProvider.GetRequiredService<TestDbContext>())
+            {
+                var entity = await context.TestEntities.SingleAsync();
+                Assert.IsNotNull(entity.LastModifiedBy);
+            }
+        }
+
+        [TestMethod]
+        public async Task ChangingAValueShouldAddAChangeRecord()
         {
             Guid id;
             using (var scope = _serviceProvider.CreateScope())
@@ -115,7 +158,7 @@ namespace Decos.Data.Auditing.Tests
         }
 
         [TestMethod]
-        public async Task ChangingAValueAddsAChangeRecord_Synchronous()
+        public async Task ChangingAValueShouldAddAChangeRecord_Synchronous()
         {
             Guid id;
             using (var scope = _serviceProvider.CreateScope())
