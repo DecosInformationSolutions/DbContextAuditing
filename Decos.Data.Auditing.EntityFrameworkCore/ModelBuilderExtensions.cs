@@ -47,6 +47,13 @@ namespace Decos.Data.Auditing.EntityFrameworkCore
                     convertFromProviderExpression: x => Type.GetType(x));
 
             modelBuilder.Entity<Change>()
+                .Property(x => x.EntityType)
+                .IsRequired()
+                .HasConversion(
+                    convertToProviderExpression: x => x.AssemblyQualifiedName,
+                    convertFromProviderExpression: x => Type.GetType(x));
+
+            modelBuilder.Entity<Change>()
                 .HasIndex(x => x.EntityId);
 
             return modelBuilder;
