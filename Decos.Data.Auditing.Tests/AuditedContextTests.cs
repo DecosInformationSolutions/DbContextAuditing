@@ -291,6 +291,33 @@ namespace Decos.Data.Auditing.Tests
             }
         }
 
+        [TestMethod]
+        public async Task ChangedEntityCanBeFound()
+        {
+            Guid id;
+            using (var scope = _serviceProvider.CreateScope())
+            using (var context = scope.ServiceProvider.GetRequiredService<TestDbContext>())
+            {
+                var entity = new TestEntity();
+                context.TestEntities.Add(entity);
+                context.SaveChanges();
+                id = entity.Id;
+
+                entity.Value1 = "Test";
+                context.SaveChanges();
+                await RunAllBackgroundTasksAsync();
+            }
+
+            using (var scope = _serviceProvider.CreateScope())
+            using (var context = scope.ServiceProvider.GetRequiredService<TestDbContext>())
+            {
+                var change = await context.Changes.SingleAsync();
+                var entity = await context.FindAsync(change.EntityType, change.EntityId);
+                Assert.IsNotNull(entity);
+                Assert.AreEqual(id, ((TestEntity)entity).Id);
+            }
+        }
+
         private async Task RunAllBackgroundTasksAsync(CancellationToken cancellationToken = default)
         {
             try
