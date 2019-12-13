@@ -5,7 +5,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Authors>Laura Verdoes</Authors>
-    <Version>1.0.0-alpha</Version>
+    <Version>1.3.1-alpha</Version>
     <Company>Decos Information Solutions</Company>
     <Description>Provides abstractions for auditing data.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
