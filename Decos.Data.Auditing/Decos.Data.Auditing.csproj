@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Authors>Laura Verdoes</Authors>
-    <Version>1.4.1-alpha</Version>
+    <Version>2.0.0-alpha</Version>
     <Company>Decos Information Solutions</Company>
     <Description>Provides abstractions for auditing data.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
